@@ -1,12 +1,14 @@
 import { useState } from "react";
 
 interface FiltersProps {
+    sDate: string;
+    eDate: string;
   onFilter: (startDate: string, endDate: string) => void;
 }
 
-const Filters = ({ onFilter }: FiltersProps) => {
-  const [startDate, setStartDate] = useState<string>("");
-  const [endDate, setEndDate] = useState<string>("");
+const Filters = ({ onFilter, sDate, eDate }: FiltersProps) => {
+  const [startDate, setStartDate] = useState<string>(sDate || "");
+  const [endDate, setEndDate] = useState<string>(eDate || "");
 
   return (
     <div className="flex gap-3 justify-center items-center">

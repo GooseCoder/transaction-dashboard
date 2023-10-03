@@ -10,9 +10,16 @@ const Dashboard = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [total, setTotal] = useState<string | null>("0");
   const [error, setError] = useState<boolean>(false);
+  const [startDate, setStartDate] = useState<string>("");
+  const [endDate, setEndDate] = useState<string>("");
 
   useEffect(() => {
-    fetch("http://localhost:3001/transactions?_page=1&limit=10")
+    let url = "http://localhost:3001/transactions?_page=" + page + "&limit=10";
+    if (startDate && endDate) {
+      url += `&date_gte=${startDate}&date_lte=${endDate}`;
+    }
+    setLoading(true);
+    fetch(url)
       .then((data) => {
         setTotal(data.headers.get("X-Total-Count"));
         return data.json();
@@ -26,44 +33,16 @@ const Dashboard = () => {
         setError(true);
         setLoading(false);
       });
-  }, []);
+  }, [page, startDate, endDate]);
 
   const pageChangeHandler = (page: string) => {
-    setLoading(true);
-    fetch(`http://localhost:3001/transactions?_page=${page}&limit=10`)
-      .then((data) => {
-        setTotal(data.headers.get("X-Total-Count"));
-        return data.json();
-      })
-      .then((data) => {
-        setData(data);
-        setPage(page);
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.error(err);
-        setError(true);
-        setLoading(false);
-      });
+    setPage(page);
   };
 
   const filteringHandler = (startDate: string, endDate: string) => {
-    setLoading(true);
-    fetch(
-      `http://localhost:3001/transactions?_page=${page}&limit=10&date_gte=${startDate}&date_lte=${endDate}`
-    )
-      .then((data) => {
-        setTotal(data.headers.get("X-Total-Count"));
-        return data.json();
-      })
-      .then((data) => {
-        setData(data);
-        setLoading(false);
-      }).catch((err) => {
-        console.error(err);
-        setError(true);
-        setLoading(false);
-      });
+    setStartDate(startDate);
+    setEndDate(endDate);
+    setPage("1");
   };
 
   if (loading) return <div>Loading...</div>;
@@ -71,7 +50,7 @@ const Dashboard = () => {
 
   return (
     <div>
-      <Filters onFilter={filteringHandler} />
+      <Filters sDate={startDate} eDate={endDate} onFilter={filteringHandler} />
       <DataTable
         colums={colums}
         data={data}
