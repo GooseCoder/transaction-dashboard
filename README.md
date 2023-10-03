@@ -2,6 +2,10 @@
 
 This is an implementation of a transaction dashboard written in node.js
 
+## Requirements
+
+- node v18.16
+
 ## Features
 
 It supports the following features
