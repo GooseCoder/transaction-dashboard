@@ -9,6 +9,7 @@ It supports the following features
 - It supports pagination by selecting, the user can change the page using the buttons in the bottom.
 - Filtering you can filter between different dates by adding some start and end dates on the filter bar on top. The dates should be in the format 'yyyy-mm-dd'
 - It should handle connection errors gracefully and display an error component in those cases.
+- It has an integrated api server using the json-server module, it stores the data on the `db.json` file.
 
 ## How to run the project
 
